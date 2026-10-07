@@ -48,6 +48,8 @@ The free tier allows 3 exports a day. The counter resets at midnight.
 
 ## Install
 
+> **Note:** the extension files are being added to this repository. The steps below will work once they are uploaded.
+
 Grabit is not on the Chrome Web Store yet. For now, load it manually:
 
 1. Download this repository: click **Code**, then **Download ZIP**, and unzip it. Or clone it with `git clone`.
