@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Grabit</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+
+  <div class="page-header">
+    <span class="wordmark">Grabit</span>
+    <span class="page-header-label">Settings</span>
+  </div>
+
+  <main class="container">
+
+    <!-- ═══════════════════════════════════
+         LICENSE SECTION
+         ═══════════════════════════════════ -->
+    <section class="settings-section">
+      <h2 class="section-title">License</h2>
+
+      <!-- Status row -->
+      <div class="status-row">
+        <span class="status-dot" id="status-dot" aria-hidden="true"></span>
+        <span id="status-text" class="status-text">Checking…</span>
+      </div>
+
+      <!-- License key input (shown when not premium) -->
+      <div id="license-input-area" class="license-input-area hidden">
+        <label class="input-label" for="license-key-input">License key</label>
+        <div class="input-row">
+          <input
+            id="license-key-input"
+            class="key-input"
+            type="text"
+            placeholder="XXXX-XXXX-XXXX-XXXX"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            maxlength="64"
+            aria-label="License key"
+          >
+          <button id="activate-btn" class="btn-primary" disabled>Activate</button>
+        </div>
+        <p id="license-feedback" class="feedback-text hidden" aria-live="polite"></p>
+      </div>
+
+      <!-- Manage row (shown when premium) -->
+      <div id="manage-area" class="manage-area hidden">
+        <p class="manage-desc">
+          Your license is active on this device. To move it to a different
+          device, remove it here first.
+        </p>
+        <button id="remove-license-btn" class="btn-ghost btn-destructive">
+          Remove license from this device
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         PLANS SECTION (free users only)
+         ═══════════════════════════════════ -->
+    <section class="settings-section" id="plans-section">
+      <h2 class="section-title">Plans</h2>
+
+      <div class="plans-grid">
+
+        <!-- Monthly -->
+        <div class="plan-card" id="plan-monthly">
+          <p class="plan-name">Monthly</p>
+          <p class="plan-price">
+            <span class="plan-amount">$3</span>
+            <span class="plan-period">/month</span>
+          </p>
+          <a id="monthly-link" href="#" class="btn-plan" target="_blank" rel="noopener noreferrer">
+            Get started
+          </a>
+        </div>
+
+        <!-- Yearly — highlighted as recommended -->
+        <div class="plan-card plan-card--featured" id="plan-yearly">
+          <p class="plan-most-popular">Most Popular</p>
+          <p class="plan-name">Yearly</p>
+          <p class="plan-price">
+            <span class="plan-original">$36/yr</span>
+            <span class="plan-amount">$25</span>
+            <span class="plan-period">/year</span>
+            <span class="plan-save-badge">Save 31%</span>
+          </p>
+          <a id="yearly-link" href="#" class="btn-plan btn-plan--featured" target="_blank" rel="noopener noreferrer">
+            Get started
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         NOTION SECTION
+         ═══════════════════════════════════ -->
+    <section class="settings-section" id="notion-section">
+      <h2 class="section-title">Notion</h2>
+
+      <!-- Status row -->
+      <div class="status-row">
+        <span class="status-dot" id="notion-status-dot" aria-hidden="true"></span>
+        <span id="notion-status-text" class="status-text">Not connected</span>
+      </div>
+
+      <!-- Not connected state -->
+      <div id="notion-connect-area">
+        <p class="manage-desc">
+          Connect your Notion account to export conversations directly to any
+          page in your workspace. Premium feature.
+        </p>
+        <button id="notion-connect-btn" class="btn-primary">Connect Notion</button>
+      </div>
+
+      <!-- Connected state (hidden until connected) -->
+      <div id="notion-manage-area" class="hidden">
+        <p class="manage-desc">
+          Connected to <strong id="notion-workspace-name"></strong>.
+          Choose a target page — conversations will be created as child pages inside it.
+        </p>
+
+        <!-- Target page input -->
+        <div class="license-input-area" style="margin-top: 16px;">
+          <label class="input-label" for="notion-page-input">Target page URL or ID</label>
+          <div class="input-row">
+            <input
+              id="notion-page-input"
+              class="key-input"
+              type="text"
+              placeholder="https://notion.so/My-Page-abc123…"
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <button id="notion-page-save-btn" class="btn-primary" disabled>Save</button>
+          </div>
+          <p id="notion-page-feedback" class="feedback-text hidden" aria-live="polite"></p>
+          <p class="feedback-text feedback-text--info" style="margin-top: 4px;">
+            Share the page with your integration first: open the page in Notion → ··· → Connections.
+          </p>
+        </div>
+
+        <button id="notion-disconnect-btn" class="btn-ghost btn-destructive" style="margin-top: 16px;">
+          Disconnect Notion
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         PREMIUM FEATURES
+         ═══════════════════════════════════ -->
+    <section class="settings-section">
+      <h2 class="section-title">What you get</h2>
+      <ul class="features-list">
+        <li class="feature-item">
+          <span class="feature-check" aria-hidden="true">✓</span>
+          <span>Unlimited selective exports — no daily cap</span>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check" aria-hidden="true">✓</span>
+          <span>No watermarks on PDF and HTML exports</span>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check" aria-hidden="true">✓</span>
+          <span>DOCX (Microsoft Word) export</span>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check" aria-hidden="true">✓</span>
+          <span>Notion sync — export directly to a Notion page</span>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check" aria-hidden="true">✓</span>
+          <span>Merge conversations into a single document</span>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check" aria-hidden="true">✓</span>
+          <span>Custom filenames and export metadata</span>
+        </li>
+        <li class="feature-item">
+          <span class="feature-check" aria-hidden="true">✓</span>
+          <span>AI responses only mode — export just the AI's side</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         ABOUT
+         ═══════════════════════════════════ -->
+    <section class="settings-section about-section">
+      <h2 class="section-title">About</h2>
+      <div class="about-row">
+        <span class="about-label">Version</span>
+        <span id="ext-version" class="about-value">—</span>
+      </div>
+      <div class="about-row">
+        <span class="about-label">Website</span>
+        <a href="https://github.com/iamkimbo/grabit" class="about-link" target="_blank" rel="noopener noreferrer">
+          github.com/iamkimbo/grabit
+        </a>
+      </div>
+      <div class="about-row">
+        <span class="about-label">Support</span>
+        <!-- Replace before publishing: your support email or URL -->
+        <a href="mailto:SUPPORT_EMAIL" class="about-link">SUPPORT_EMAIL</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts: storage utils first, then license/notion modules, then page logic -->
+  <script src="../utils/storage.js"></script>
+  <script src="../licensing/license.js"></script>
+  <script src="../exporters/notion.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

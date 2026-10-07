@@ -1,0 +1,946 @@
+/* =============================================================
+   popup.css
+   Styles for the Grabit extension popup.
+   Design system: Inter font, near-black accent, generous
+   whitespace, no gradients, no bright colors.
+
+   Design tokens:
+     --bg:          #FAFAFA  — popup background
+     --surface:     #FFFFFF  — cards and rows
+     --text-1:      #111111  — primary text
+     --text-2:      #6B7280  — secondary / captions
+     --border:      #E5E7EB  — dividers and input outlines
+     --hover:       #F9FAFB  — row hover background
+     --accent:      #111111  — primary button fill
+     --accent-text: #FFFFFF  — text on primary button
+   ============================================================= */
+
+/* ---- Reset ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---- Root ---- */
+html, body {
+  width: 360px;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #111111;
+  background: #FAFAFA;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---- Utility ---- */
+.hidden { display: none !important; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+button:focus-visible { outline: 2px solid #111111; outline-offset: 2px; }
+
+a { color: inherit; text-decoration: none; }
+a:focus-visible { outline: 2px solid #111111; outline-offset: 2px; }
+
+/* ============================================================
+   PIN NUDGE
+   ============================================================ */
+.pin-nudge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #FFFBEB;
+  color: #92400E;
+  font-size: 12px;
+  line-height: 1.4;
+  border-bottom: 1px solid #FDE68A;
+  /* Fade-out transition triggered by JS adding .dismissing class */
+  transition: opacity 0.3s ease;
+}
+
+.pin-nudge.dismissing { opacity: 0; pointer-events: none; }
+
+.pin-nudge-text { flex: 1; }
+
+.pin-nudge-dismiss {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  color: #92400E;
+  opacity: 0.6;
+  border-radius: 3px;
+  transition: opacity 0.1s;
+}
+.pin-nudge-dismiss:hover { opacity: 1; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wordmark {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: -0.01em;
+}
+
+.platform-label {
+  font-size: 11px;
+  color: #6B7280;
+  background: #F3F4F6;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: #6B7280;
+  border-radius: 6px;
+  transition: background 0.1s, color 0.1s;
+}
+.icon-btn:hover { background: #F3F4F6; color: #111111; }
+
+/* ============================================================
+   APP CONTAINER
+   ============================================================ */
+.app {
+  padding: 0;
+}
+
+/* ============================================================
+   STATE PANELS (loading / unsupported / empty / error)
+   ============================================================ */
+.state-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 32px 24px;
+  text-align: center;
+  min-height: 140px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #E5E7EB;
+  border-top-color: #111111;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-bottom: 4px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.state-label {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.state-emoji {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.state-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.state-desc {
+  font-size: 12px;
+  color: #6B7280;
+  line-height: 1.5;
+  max-width: 220px;
+}
+
+.retry-btn {
+  margin-top: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #111111;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  background: #FFFFFF;
+  transition: background 0.1s;
+}
+.retry-btn:hover { background: #F9FAFB; }
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F3F4F6;
+}
+.section:last-child { border-bottom: none; }
+
+/* ============================================================
+   FORMAT TABS (segmented control)
+   ============================================================ */
+.format-tabs {
+  display: flex;
+  background: #F3F4F6;
+  border-radius: 7px;
+  padding: 2px;
+  gap: 1px;
+}
+
+.format-tab {
+  flex: 1;
+  padding: 5px 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: #6B7280;
+  border-radius: 5px;
+  letter-spacing: 0.02em;
+  transition: background 0.12s, color 0.12s;
+}
+.format-tab:hover:not(.active) { color: #374151; }
+.format-tab.active {
+  background: #111111;
+  color: #FFFFFF;
+}
+
+/* ============================================================
+   LIST HEADER
+   ============================================================ */
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.list-header-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6B7280;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.selected-count {
+  font-size: 11px;
+  color: #9CA3AF;
+}
+
+/* ============================================================
+   CUSTOM CHECKBOX
+   Used for both the select-all and individual message checkboxes.
+   ============================================================ */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-input {
+  /* Hidden but remains in DOM for :checked/:indeterminate CSS selectors */
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.checkbox-custom {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 3px;
+  background: #FFFFFF;
+  transition: background 0.1s, border-color 0.1s;
+  position: relative;
+}
+
+/* Checked state */
+.checkbox-input:checked + .checkbox-custom {
+  background: #111111;
+  border-color: #111111;
+}
+.checkbox-input:checked + .checkbox-custom::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0px;
+  width: 5px;
+  height: 9px;
+  border: 1.5px solid #FFFFFF;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* Indeterminate state (select-all when some are selected) */
+.checkbox-input:indeterminate + .checkbox-custom {
+  background: #111111;
+  border-color: #111111;
+}
+.checkbox-input:indeterminate + .checkbox-custom::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: calc(100% - 4px);
+  height: 1.5px;
+  background: #FFFFFF;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 1px;
+}
+
+/* ============================================================
+   MESSAGE LIST
+   ============================================================ */
+.message-list {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Negative margin/padding trick to keep items flush with section edges */
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+
+/* Subtle scrollbar */
+.message-list::-webkit-scrollbar { width: 4px; }
+.message-list::-webkit-scrollbar-track { background: transparent; }
+.message-list::-webkit-scrollbar-thumb {
+  background: #E5E7EB;
+  border-radius: 2px;
+}
+
+/* Message row */
+.msg-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  margin: 0 -16px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.08s;
+  user-select: none;
+}
+.msg-row:hover { background: #F9FAFB; }
+
+.msg-role {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+.msg-role--user    { color: #374151; background: #F3F4F6; }
+.msg-role--assistant { color: #1D4ED8; background: #EFF6FF; }
+
+.msg-preview {
+  flex: 1;
+  font-size: 12px;
+  color: #6B7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Empty list state */
+.msg-list-empty {
+  padding: 12px 0;
+  font-size: 12px;
+  color: #9CA3AF;
+  text-align: center;
+}
+
+/* ============================================================
+   SELECTIVE CONTROLS
+   ============================================================ */
+.selective-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Toggle switch */
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+  color: #374151;
+}
+
+.toggle-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.toggle-track {
+  width: 28px;
+  height: 16px;
+  background: #D1D5DB;
+  border-radius: 8px;
+  position: relative;
+  transition: background 0.15s;
+}
+
+.toggle-input:checked + .toggle-track {
+  background: #111111;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.15s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-input:checked + .toggle-track .toggle-thumb {
+  transform: translateX(12px);
+}
+
+/* Quick filter pills */
+.filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pill-btn {
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #374151;
+  background: #F3F4F6;
+  border-radius: 999px;
+  transition: background 0.1s, color 0.1s;
+}
+.pill-btn:hover { background: #E5E7EB; }
+
+.pill-btn--ghost {
+  background: transparent;
+  color: #6B7280;
+}
+.pill-btn--ghost:hover { background: #F3F4F6; color: #374151; }
+
+/* ============================================================
+   EXPORT BUTTON
+   ============================================================ */
+.export-section {
+  padding-top: 12px;
+  padding-bottom: 14px;
+}
+
+.export-btn {
+  width: 100%;
+  padding: 11px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: #111111;
+  border-radius: 6px;
+  letter-spacing: -0.01em;
+  transition: background 0.12s, opacity 0.1s;
+  position: relative;
+}
+.export-btn:hover:not(:disabled) { background: #1F1F1F; }
+.export-btn:active:not(:disabled) { background: #333333; }
+.export-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Cap message — inline, below export button */
+.cap-message {
+  margin-top: 9px;
+  font-size: 12px;
+  color: #6B7280;
+  font-style: italic;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ============================================================
+   REVIEW ASK BAR
+   Slides up from bottom after milestone exports.
+   position:fixed so it overlays without affecting layout.
+   ============================================================ */
+.review-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #F9FAFB;
+  border-top: 1px solid #E5E7EB;
+  padding: 10px 16px;
+  font-size: 12px;
+  color: #374151;
+  cursor: pointer;
+  transform: translateY(100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  user-select: none;
+}
+.review-bar:hover { background: #F3F4F6; }
+.review-bar:focus-visible { outline: 2px solid #111111; outline-offset: -2px; }
+
+.review-bar.visible { transform: translateY(0); }
+
+/* When review bar is visible, add bottom padding to prevent content overlap */
+.has-review-bar .export-section { padding-bottom: 54px; }
+
+/* ============================================================
+   UPGRADE MODAL
+   ============================================================ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 16px;
+  /* Fade in */
+  animation: backdropIn 0.15s ease;
+}
+@keyframes backdropIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-card {
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 24px;
+  width: 100%;
+  max-width: 296px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Slide up on open */
+  animation: cardIn 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-heading {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  font-size: 13px;
+  color: #6B7280;
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.btn-upgrade {
+  display: block;
+  width: 100%;
+  padding: 11px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: #111111;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: background 0.12s;
+  cursor: pointer;
+}
+.btn-upgrade:hover { background: #1F1F1F; }
+
+.btn-maybe-later {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  text-align: center;
+  font-size: 13px;
+  color: #6B7280;
+  border-radius: 6px;
+  transition: color 0.1s;
+  cursor: pointer;
+}
+.btn-maybe-later:hover { color: #374151; }
+
+/* ============================================================
+   SELECT-ALL in list header (reuses .checkbox-label)
+   ============================================================ */
+.select-all-wrap {
+  /* Inherits .checkbox-label styles */
+}
+
+/* ============================================================
+   HEADER RIGHT — wraps merge button + settings button
+   ============================================================ */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ============================================================
+   MERGE MODE BUTTON (header — premium + 2+ items only)
+   ============================================================ */
+.merge-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  background: #F3F4F6;
+  border-radius: 999px;
+  transition: background 0.1s;
+}
+.merge-mode-btn:hover { background: #E5E7EB; }
+
+.merge-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: #111111;
+  border-radius: 999px;
+}
+
+/* ============================================================
+   QUEUE BUTTON (below export button in main UI)
+   ============================================================ */
+.queue-btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  background: transparent;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  text-align: center;
+  transition: background 0.1s, border-color 0.1s;
+}
+.queue-btn:hover { background: #F9FAFB; border-color: #D1D5DB; }
+.queue-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ============================================================
+   MERGE UI
+   ============================================================ */
+
+/* Header row */
+.merge-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.merge-back-btn {
+  font-size: 12px;
+  color: #6B7280;
+  padding: 4px 8px;
+  border-radius: 5px;
+  transition: background 0.1s, color 0.1s;
+}
+.merge-back-btn:hover { background: #F3F4F6; color: #111111; }
+
+.merge-header-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+}
+
+/* Queue item list */
+.merge-item-list {
+  max-height: 180px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.merge-item-list::-webkit-scrollbar { width: 4px; }
+.merge-item-list::-webkit-scrollbar-track { background: transparent; }
+.merge-item-list::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
+
+/* Individual queue item */
+.merge-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-bottom: 1px solid #F3F4F6;
+  user-select: none;
+  transition: background 0.08s;
+}
+.merge-item:hover { background: #F9FAFB; }
+.merge-item--dragging { opacity: 0.45; }
+.merge-item--dragover {
+  background: #EFF6FF;
+  border-top: 2px solid #2563EB;
+}
+
+/* Drag handle */
+.merge-item-handle {
+  flex-shrink: 0;
+  font-size: 13px;
+  color: #D1D5DB;
+  cursor: grab;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+.merge-item-handle:active { cursor: grabbing; }
+
+/* Platform badge inside queue item */
+.merge-item-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 2px 6px;
+  border-radius: 999px;
+  color: #374151;
+  background: #F3F4F6;
+}
+
+/* Title */
+.merge-item-title {
+  flex: 1;
+  font-size: 12px;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Remove × button */
+.merge-item-remove {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  color: #9CA3AF;
+  border-radius: 3px;
+  transition: color 0.1s, background 0.1s;
+}
+.merge-item-remove:hover { color: #374151; background: #F3F4F6; }
+
+/* Post-export inline message */
+.merge-post-msg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+  font-size: 12px;
+  color: #374151;
+}
+
+.merge-inline-btn {
+  font-size: 12px;
+  font-weight: 500;
+  color: #111111;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  transition: opacity 0.1s;
+}
+.merge-inline-btn:hover { opacity: 0.65; }
+
+.merge-inline-sep { color: #9CA3AF; }
+
+/* ============================================================
+   COLLAPSIBLE SECTIONS (Filename / Metadata)
+   Collapsed by default. Header row is the clickable toggle.
+   ============================================================ */
+
+/* A collapsible-section has no additional padding beyond .section */
+.collapsible-section {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Full-width clickable header row */
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+  transition: background 0.08s;
+}
+.collapsible-header:hover { background: #F9FAFB; }
+.collapsible-header:focus-visible { outline: 2px solid #111111; outline-offset: 2px; }
+
+/* Small-caps grey label */
+.collapsible-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6B7280;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Chevron indicator — ▸ collapsed, ▾ expanded (set via JS) */
+.collapsible-chevron {
+  font-size: 9px;
+  color: #9CA3AF;
+  transition: color 0.1s;
+  line-height: 1;
+}
+.collapsible-header:hover .collapsible-chevron { color: #6B7280; }
+
+/* Expanded body — slides in below the header */
+.collapsible-body {
+  padding-top: 9px;
+}
+
+/* ============================================================
+   META INPUTS (filename and metadata fields)
+   ============================================================ */
+
+/* Stack multiple fields vertically */
+.meta-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Wrapper positions the lock icon absolutely inside the field */
+.meta-field-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* The text input — same clean border style as settings page */
+.meta-input {
+  width: 100%;
+  padding: 7px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #111111;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.12s;
+}
+.meta-input::placeholder { color: #9CA3AF; }
+.meta-input:focus { border-color: #9CA3AF; }
+
+/* Locked input needs right padding to avoid text behind the lock icon */
+.meta-field-wrap--locked .meta-input {
+  padding-right: 30px;
+}
+
+/* Lock icon — overlaid on the right edge of the input */
+.meta-lock-icon {
+  position: absolute;
+  right: 9px;
+  display: none;      /* hidden by default; JS adds .meta-field-wrap--locked to show */
+  align-items: center;
+  justify-content: center;
+  color: #9CA3AF;
+  pointer-events: none;
+}
+
+/* Hint text below the filename input */
+.meta-hint {
+  margin-top: 6px;
+  font-size: 11px;
+  color: #9CA3AF;
+  line-height: 1.4;
+}
+
+/* ---- Locked state (free users) ---- */
+/* Applied by JS when isPremium is false */
+.meta-field-wrap--locked {
+  cursor: not-allowed;
+}
+.meta-field-wrap--locked .meta-input {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;  /* click handled on wrapper instead */
+}
+.meta-field-wrap--locked .meta-lock-icon {
+  display: flex;
+}

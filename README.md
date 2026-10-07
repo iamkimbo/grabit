@@ -44,11 +44,9 @@ Copying a long AI conversation by hand loses the formatting, the code blocks and
 - No Grabit watermark on PDF and HTML output.
 - No daily limit.
 
-The free tier allows 3 exports a day. The counter resets at midnight.
+Exporting a whole conversation is unlimited on the free tier. Exports where you pick specific messages, AI responses only, or the last N turns are limited to 3 a day. The counter resets at midnight.
 
 ## Install
-
-> **Note:** the extension files are being added to this repository. The steps below will work once they are uploaded.
 
 Grabit is not on the Chrome Web Store yet. For now, load it manually:
 
@@ -74,11 +72,11 @@ For long conversations, Grabit scrolls the page first so messages that have not 
 
 - **Scrapers.** Each platform has its own content script that reads the conversation from the page's DOM. No API keys are needed.
 - **Exporters.** Each format has its own converter. The file is built in the browser and downloaded directly.
-- **Gate.** A small module counts free exports per day and checks whether a Pro licence is active.
+- **Gate.** A small module counts selective exports per day and checks whether a Pro licence is active.
 - **Licence check.** Pro is unlocked with a licence key validated through LemonSqueezy. There is no Grabit backend.
 - **Notion sync.** Uses the official Notion API with OAuth. You choose where the page goes.
 
-Built on Manifest V3 with plain JavaScript, HTML and CSS. DOCX files are generated with [docx](https://github.com/dolanmiu/docx). Settings and the daily counter are stored with the Chrome storage API.
+Built on Manifest V3 with plain JavaScript, HTML and CSS. DOCX files are written by Grabit's own exporter, and PDF files are generated with the bundled jsPDF library. Settings and the daily counter are stored with the Chrome storage API.
 
 ## Privacy
 
@@ -93,7 +91,6 @@ Full details are in [PRIVACY.md](PRIVACY.md).
 
 Version 1 is feature-complete and in pre-launch testing.
 
-- PDF export currently opens Chrome's print dialog, where you choose **Save as PDF**. A direct one-click PDF download is the next fix.
 - Pro licences are not on sale yet.
 - A Chrome Web Store listing is planned.
 
@@ -109,8 +106,6 @@ Built by Rakim Mistry ([@iamkimbo](https://github.com/iamkimbo)).
 
 ## License
 
-Copyright © 2026 the Grabit authors. All rights reserved.
-
-The source is published so you can read it and load the extension yourself. It is not licensed for redistribution or resale.
+No license has been chosen for this project yet. You are welcome to read the code and load the extension for your own use. Please ask before redistributing or reselling it.
 
 Grabit is an independent project. It is not affiliated with or endorsed by OpenAI, Anthropic, Google or xAI.
